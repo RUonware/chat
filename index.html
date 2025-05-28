@@ -34,7 +34,7 @@
       word-wrap: break-word;
     }
     #msgInput {
-      width: 70%;
+      width: 65%;
       padding: 8px;
       border-radius: 6px;
       border: none;
@@ -43,7 +43,6 @@
       box-sizing: border-box;
     }
     button {
-      width: 25%;
       padding: 8px;
       border: none;
       border-radius: 6px;
@@ -51,10 +50,15 @@
       color: #222;
       font-weight: bold;
       cursor: pointer;
-      margin-left: 5%;
+      margin-left: 5px;
     }
     button:hover {
       background: #48a868;
+    }
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -63,14 +67,16 @@
   <div id="chat">
     <div id="messages"></div>
     <input id="msgInput" placeholder="Mesaj yaz..." autocomplete="off" />
-    <button onclick="sendMessage()">Gönder</button>
+    <div class="button-group">
+      <button onclick="sendMessage()">Gönder</button>
+      <button onclick="clearChatPrompt()">Chati Temizle</button>
+    </div>
   </div>
 
   <script>
     const messagesDiv = document.getElementById('messages');
     const msgInput = document.getElementById('msgInput');
 
-    // Mesajları LocalStorage'dan yükle ve ekranda göster
     function loadMessages() {
       let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
       messagesDiv.innerHTML = "";
@@ -79,14 +85,12 @@
         div.textContent = msg;
         messagesDiv.appendChild(div);
       });
-      // Scroll en alta
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // Mesaj gönderme fonksiyonu
     function sendMessage() {
       const text = msgInput.value.trim();
-      if(text){
+      if (text) {
         let messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
         messages.push(text);
         localStorage.setItem('chatMessages', JSON.stringify(messages));
@@ -95,10 +99,19 @@
       }
     }
 
-    // Sayfa yüklendiğinde mesajları yükle
+    function clearChatPrompt() {
+      const code = prompt("Chati temizlemek için şifreyi gir:");
+      if (code === "ruonfree1234") {
+        localStorage.removeItem('chatMessages');
+        loadMessages();
+        alert("Chat temizlendi!");
+      } else if (code) {
+        alert("Şifre yanlış.");
+      }
+    }
+
     window.onload = loadMessages;
 
-    // Enter ile gönderme
     msgInput.addEventListener('keydown', function(e){
       if(e.key === 'Enter'){
         sendMessage();
