@@ -105,12 +105,12 @@
         localStorage.removeItem('chatMessages');
         loadMessages();
         alert("Chat temizlendi!");
-      } else if (code) {
-        alert("Şifre yanlış.");
+      } else {
+        alert("Şifre yanlış veya iptal edildi.");
       }
     }
 
-    window.onload = loadMessages;
+    window.addEventListener('load', loadMessages);
 
     msgInput.addEventListener('keydown', function(e){
       if(e.key === 'Enter'){
